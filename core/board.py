@@ -5,6 +5,7 @@ scrambling algorithms, hint logic, and solve detection.
 
 import random
 from typing import List, Tuple, Optional
+import cv2
 import numpy as np
 
 from core.tile import Tile
