@@ -14,13 +14,15 @@ def show_win_dialog(master, moves_count: int):
     dialog.resizable(False, False)
     dialog.configure(bg="#181825")
     dialog.transient(master)
-    dialog.grab_set()
-
-    # Center dialog on screen
     dialog.update_idletasks()
     x = master.winfo_x() + (master.winfo_width() // 2) - 190
     y = master.winfo_y() + (master.winfo_height() // 2) - 110
     dialog.geometry(f"+{x}+{y}")
+    dialog.deiconify()
+    try:
+        dialog.grab_set()
+    except tk.TclError:
+        pass
 
     # Content
     lbl_title = tk.Label(

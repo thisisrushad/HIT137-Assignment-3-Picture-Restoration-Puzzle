@@ -114,13 +114,12 @@ class PuzzleCanvasView(tk.Frame):
         pil_img = Image.fromarray(rgb)
         self._ref_photo = ImageTk.PhotoImage(pil_img)
 
-        # Center in canvas
         cw = self.ref_canvas.winfo_width()
         ch = self.ref_canvas.winfo_height()
-        cx = max(cw // 2, pil_img.width // 2)
-        cy = max(ch // 2, pil_img.height // 2)
+        offset_x = max(0, (cw - pil_img.width) // 2)
+        offset_y = max(0, (ch - pil_img.height) // 2)
 
-        self.ref_canvas.create_image(cx, cy, image=self._ref_photo, anchor=tk.CENTER)
+        self.ref_canvas.create_image(offset_x, offset_y, image=self._ref_photo, anchor=tk.NW)
 
     def render_puzzle(self, board: Board, reference_bgr: Optional[np.ndarray] = None):
         """
