@@ -153,20 +153,27 @@ class Board:
         transformations: List[Transformation] = []
 
         all_coords = [(r, c) for r in range(self._grid_size) for c in range(self._grid_size)]
+        available_coords = list(all_coords)
+        random.shuffle(available_coords)
 
         for _ in range(num_transforms):
             choice = random.choice(["swap", "rotate", "flip"])
-            if choice == "swap":
-                p1, p2 = random.sample(all_coords, 2)
+            if choice == "swap" and len(available_coords) >= 2:
+                p1 = available_coords.pop()
+                p2 = available_coords.pop()
                 transformations.append(SwapTransformation(p1, p2))
-            elif choice == "rotate":
-                pos = random.choice(all_coords)
+            elif choice == "rotate" and available_coords:
+                pos = available_coords.pop()
                 angle = random.choice([90, 180, 270])
                 transformations.append(RotateTransformation(pos, angle))
-            elif choice == "flip":
-                pos = random.choice(all_coords)
+            elif choice == "flip" and available_coords:
+                pos = available_coords.pop()
                 horizontal = random.choice([True, False])
                 transformations.append(FlipTransformation(pos, horizontal=horizontal))
+            else:
+                # If all tiles were already targeted once, pick from all_coords
+                pos = random.choice(all_coords)
+                transformations.append(RotateTransformation(pos, 90))
 
         # Apply transformations polymorphically
         for t in transformations:
